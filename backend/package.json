@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "active-win": "^5.1.3",
     "express": "^4.17.1",
     "find-process": "^1.4.2",
     "node-cmd": "^3.0.0",

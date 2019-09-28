@@ -12,11 +12,12 @@ const vkey = require('vkey');
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 3005
 
+const activeWin = require('active-win');
 const distractions = ['steam_osx'];
 
-let ratio = 0;
+var ratio = 0;
 let keywordWords = 0;
 let normalWords = 0;
 
@@ -25,9 +26,39 @@ let endTime = null;
 
 let clockedTimes = [];
 
-// app.get('/', (req, res) => res.send('Hello World!'))
+// this.state = {
+//     value: '',
+//     apps: [
+//       {
+//         name: "steam_osx",
+//       }
+//     ],
+//     log: [
+//       {
+//         duration: 2, // duration in minutes, values of 0.10 also possible, so round up
+//         start_time: Date.now(),
+//         end_time: Date.now().setMinutes(Date.now().getMinutes() + 2),
+//         type: "Software Development"
+//       }
+//     ]
+//   };
 
-// app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+let apps = [{
+    name: 'steam_osx'
+}];
+
+let log = [];
+
+app.get('/health', (req, res) => res.send('Hello World!'))
+
+app.get('/apps', (req,res) => {
+    res.send(apps);
+});
+
+app.get('/logs', (req,res) => {
+    res.send(log);
+})
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 // distractions.forEach(distraction => {
 //     find('name', distraction, true)
@@ -63,7 +94,7 @@ ws.on('open', () => {
         if(msg.path.localeCompare('devices') === 0) {
             msg.value.forEach(device => {
                 if(device.type.localeCompare('keyboard') === 0 && msg.verb.localeCompare('get') === 0){
-                    console.log('found keyboard')
+                    // console.log('found keyboard')
                     keyboard = device.unitId
                     ws.send(JSON.stringify(
                         {
@@ -84,7 +115,7 @@ ws.on('open', () => {
                         }
                     ))
                 } else if(device.type.localeCompare('mouse') === 0 && msg.verb.localeCompare('get') === 0){
-                    console.log('found mouse')
+                    // console.log('found mouse')
                     mouse = device.unitId;
                     ws.send(JSON.stringify(
                         {
@@ -109,30 +140,86 @@ ws.on('open', () => {
         } else if(msg.path.localeCompare('key') === 0) {
             // either space bar (49) or ; (41) are pressed meaning end of statement or word
             if(isKeyPressed(msg, '49') || isKeyPressed(msg, '41')) {
-                console.log('space pressed!');
+                // console.log('space pressed!');
             } else {
                 if(getVkeyMapping(msg.value.vkey) !== null) {
                     const letter = getVkeyMapping(msg.value.vkey);
                     if(letter.localeCompare('space') === 0 || letter.localeCompare('enter') === 0) {
                         if(isKeyword(currentWord)) {
-                            console.log('is keyword')
+                            // console.log('is keyword')
                             keywordWords = keywordWords + 1;
                         } else {
                             normalWords = normalWords + 1;
                         }
                         ratio = keywordWords / (keywordWords + normalWords);
-
+                        console.log(ratio);
                         if(ratio < 0.45) {
-                            endTime = new Date();
-                            let t = ((endTime - startTime) / 60000);
-                            clockedTimes.push(parseFloat(t).toFixed(2));
-                            console.log('Clocked: ' + parseFloat(t).toFixed(2) + ' minutes')
+                            console.log('ratio lower than 0.45');
+                                // not programming 
+                                endTime = new Date();
+                                let t = ((endTime - startTime) / 60000);
+                                t = parseFloat(t).toFixed(2) * 60 / 100; // how many minutes
+                                if(t < 60) {
+                                    t = 1;
+                                }
+                                
+                                const logEntry = {
+                                    duration: t, // duration in minutes, values of 0.10 also possible, so round up
+                                    start_time: startTime,
+                                    end_time: endTime,
+                                    type: "Software Development"
+                                }
+
+                                if(t < 2616){
+                                    log.push(logEntry);
+                                    clockedTimes.push(parseFloat(t).toFixed(2));
+                                console.log('Clocked: ' + parseFloat(t).toFixed(2) + ' minutes')
+                                }
+                                
+
+                                startTime = null;
+                                keywordWords = 0;
+                                normalWords = 0;
+                            
+                            // activeWin().then(data => {
+                            //     console.log('promise');
+                            //     if(data.owner.name.localeCompare('Code') !== 0){
+                            //         // not programming 
+                            //         endTime = new Date();
+                            //         let t = ((endTime - startTime) / 60000);
+                            //         clockedTimes.push(parseFloat(t).toFixed(2));
+                            //         console.log('Clocked: ' + parseFloat(t).toFixed(2) + ' minutes')
+                            //         startTime = null;
+                            //         keywordWords = 0;
+                            //         normalWords = 0;
+                            //         ratio = 1;
+                            //         const logEntry = {
+                            //             duration: t, // duration in minutes, values of 0.10 also possible, so round up
+                            //             start_time: startTime,
+                            //             end_time: endTime,
+                            //             type: "Software Development"
+                            //         }
+
+                            //         log.push(logEntry);
+                            //     }
+                            // });
                         } else {
                             if(startTime == null) {
                                 startTime = new Date();
+                                endDate = new Date();
+                                distractions.forEach(distraction => {
+                                    find('name', distraction, true)
+                                    .then(function (list) {
+                                        console.log('Found process(es) from your distraction list!', list.length);
+                                        list.forEach(process => {
+                                            cmd.run('kill -9 ' + process.pid);
+                                            console.log('Killing ' + process.name);
+                                        })
+                                    });
+                                });       
                             }
                         }
-                        console.log('normalWords: ' + normalWords + ':' + keywordWords + ' keywordWords, ration: ' + ratio )
+                        // console.log('normalWords: ' + normalWords + ':' + keywordWords + ' keywordWords, ration: ' + ratio )
                         currentWord = '';
                     } else { 
                         if(msg.value.pressed) {
@@ -145,8 +232,6 @@ ws.on('open', () => {
         // Parse received message
         // const message = JSON.parse(messageJson);
         // console.log(message);
-
-
         if(keyboard == null || mouse == null){
             getDevices();
         }
@@ -171,7 +256,7 @@ function getVkeyMapping(vkeyCode) {
 }
 const mappings = [
     'A', // 0
-    'S', // 1r
+    'S', // 1
     'D', // 2
     'F', // 3
     'H', // 4
