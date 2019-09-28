@@ -19,7 +19,7 @@
  
 }
 
-.header img {
+.sidebar img {
   float: left;
   width: 120px;
   height: 120px;
@@ -39,7 +39,7 @@
   width: 160px;
   position: fixed;
   z-index: 1;
-  top: 10;
+  top: 0;
   left: 0;
   background-color: #28282e;
   overflow-x: hidden;

@@ -20,11 +20,11 @@ class App extends Component {
   componentDidMount() {
     fetch('/apps')
       .then(response => response.json())
-      .then(data => this.setState({...this.state, apps: data }));
+      .then(data => this.setState({apps: data }));
 
     fetch('/logs')
       .then(response => response.json())
-      .then(data => this.setState({...this.state, log: data }));
+      .then(data => this.setState({ log: data }));
 
     console.log("StatE::: " + JSON.stringify(this.state));
   }
@@ -37,13 +37,13 @@ class App extends Component {
 
 
       <div className="header">
-      <img src="./logo_transparent.png" alt="logo" />
+      
       <h1>DevTime</h1>
       </div>
 
 
       <div className="sidebar">
-      
+      <img src="./logo_transparent.png" alt="logo" />
       </div>
 
 
