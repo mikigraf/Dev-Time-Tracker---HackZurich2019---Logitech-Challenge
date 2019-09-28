@@ -5,6 +5,7 @@ import {Component} from 'react';
 import Input from './Input';
 import TimeTable from './TimeTable';
 import BlockedAppTable from './BlockedAppTable';
+import {Menu} from 'element-react';
 
 class App extends Component {
   constructor(props) {
@@ -29,22 +30,43 @@ class App extends Component {
   
   render(){
     return (
-      // {/* <div class="sidebar">
-      // <a href="#abc"> a </a>
-      // <a href="#def"> b </a>
-      // <a href="#ghi"> c </a>
-      // <a href="#jkl"> d </a>
-      // </div> */}
-  
-      <div className="main">
-        <p>bla bla bla </p>
-        <p>miau miau </p>
       
-      <Input value='ich liebe dich' />
-      <TimeTable logs={this.state.log}/>
-      <BlockedAppTable apps={this.state.apps}/>
-  
+    <div>
+
+
+      <div class="header">
+      <img src="./logo_transparent.png" alt="logo" />
+      <h1>DevTime</h1>
       </div>
+
+
+      <div className="sidebar">
+      
+      </div>
+
+
+
+      <div className="main">
+        
+      
+      <div className= "input">
+      <p>block app</p>
+      <Input />
+      </div>
+
+      
+      <div className= "timetable">
+      <p>time spent</p>
+      <TimeTable logs={this.state.log}/>
+      </div>
+
+      
+      <div className= "blockedapptable">
+       <p>blocked apps</p>
+      <BlockedAppTable apps={this.state.apps}/>
+      </div>
+  
+      </div></div>
   
     );
   }
@@ -52,11 +74,3 @@ class App extends Component {
 }
 
 export default App;
-// render: function(data)
-//    {
-//        return (
-//            <span>
-//                <span style={{marginLeft: '10px'}}>{data.time}</span>
-//            </span>
-//        )
-//    }

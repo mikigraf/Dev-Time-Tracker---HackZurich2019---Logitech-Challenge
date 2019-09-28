@@ -18,7 +18,7 @@ class BlockedAppTable extends React.Component
                 {
                     label: "App-Name",
                     prop: "name",
-                    width: 450, 
+                    width: 600, 
                     render: function(data)
                     {
                         return <span>

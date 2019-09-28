@@ -30,7 +30,7 @@ class Input extends React.Component {
             Input: 
             <input type="text" value={this.props.value} placeholder={this.props.value} onChange={this.handleChange} />
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Block" />
         </form>
         </div>
       );

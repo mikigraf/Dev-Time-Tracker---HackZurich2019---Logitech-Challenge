@@ -10,29 +10,54 @@
 }
 
 
+.header {
+  background-color:#28282e;
+  padding: 20px;
+  text-align: center;
+  font-weight: 200;
+  color:lightgrey;
+ 
+}
+
+.header img {
+  float: left;
+  width: 120px;
+  height: 120px;
+
+}
+
+.header h1 {
+  position: relative;
+  top: 18px;
+  left: 10px;
+}
+
+
 
 .sidebar {
   height: 100%;
   width: 160px;
   position: fixed;
   z-index: 1;
-  top: 0;
+  top: 10;
   left: 0;
-  background-color: #111;
+  background-color: #28282e;
   overflow-x: hidden;
   padding-top: 20px;
+  
 }
 
 .sidebar a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
-  color: blue;
+  color: white;
   display: block;
+  padding: 30px;
 }
 
 .sidebar a:hover {
-  color: red;
+  color: #D1D9ED;
 }
 .main {
   margin-top: 100px;
@@ -43,6 +68,22 @@
   font-size: 28px; /* Increased text to enable scrolling */
   padding: 20px 10px;
 }
+
+.input {
+  padding: 20px 10px;
+  text-align: left;
+  font-size: 20px;
+}
+
+.timetable{
+  padding: 20px 10px;
+}
+
+.blockedapptable{
+  padding: 20px 10px;
+}
+
+
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
