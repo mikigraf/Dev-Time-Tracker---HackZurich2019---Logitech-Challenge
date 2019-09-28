@@ -15,6 +15,8 @@ const app = express()
 const port = 3005
 
 const activeWin = require('active-win');
+const getChromeTabs = require('get-chrome-tabs');
+
 const distractions = ['steam_osx'];
 
 var ratio = 0;
@@ -25,6 +27,12 @@ let startTime = null;
 let endTime = null;
 
 let clockedTimes = [];
+
+const programmingTools = ['Code'];
+const programmingWebsites = ['github'];
+
+const pmTools = [''];
+const pmWebsites = ['jira'];
 
 // this.state = {
 //     value: '',
@@ -88,7 +96,7 @@ ws.on('open', () => {
     let words = [];
     let currentWord = '';
     // Send command to server
-    ws.on('message', messageJson => {
+    ws.on('message', async messageJson => {
         const msg = JSON.parse(messageJson);
         // handle devices
         if(msg.path.localeCompare('devices') === 0) {
@@ -203,6 +211,28 @@ ws.on('open', () => {
                             //         log.push(logEntry);
                             //     }
                             // });
+
+                            // const activeWindow = await activeWin();
+                            // const tabs = await getChromeTabs();
+                            // const activeTab = tabs.filter(tab => {
+                            //     tab.active == true;
+                            // })
+
+                            
+                            // console.log(activeWindow);
+
+                            // if(programmingTools.includes(activeWindow.name)) {
+                            //     // programming 
+                            // } else if(activeWindow.name.localeCompare('Google Chrome') === 0 ){
+                            //     const isProgrammingWebsiteActive = programmingWebsites.filter(website => {
+                            //         website.name.includes(activeTab);
+                            //     }) || false;
+
+                            //     if(isProgrammingWebsiteActive) {
+                            //         // programming website 
+                            //     }
+                            // }
+                            // console.log(tabs);
                         } else {
                             if(startTime == null) {
                                 startTime = new Date();
