@@ -1,36 +1,25 @@
+const port = 4000;
+
 const WebSocket = require('ws');
-
 const serverUrl = 'ws://localhost:9876';
-
 const ws = new WebSocket(serverUrl);
-
 const find = require('find-process');
 const ps = require('ps-node');
 const cmd = require('node-cmd');
-
 const vkey = require('vkey');
-
 const express = require('express')
-const app = express()
-const port = 3005
-
+const app = express();
 const activeWin = require('active-win');
 const getChromeTabs = require('get-chrome-tabs');
-
 const distractions = ['steam_osx'];
-
 var ratio = 0;
 let keywordWords = 0;
 let normalWords = 0;
-
 let startTime = null;
 let endTime = null;
-
 let clockedTimes = [];
-
 const programmingTools = ['Code'];
 const programmingWebsites = ['github'];
-
 const pmTools = [''];
 const pmWebsites = ['jira'];
 

@@ -12,29 +12,31 @@ class App extends Component {
     super(props);
     this.state = {
       value: '',
-      apps: [
-        {
-          name: "steam_osx",
-        }
-      ],
-      log: [
-        {
-          duration: 2, // duration in minutes, values of 0.10 also possible, so round up
-          start_time: Date.now(),
-          end_time: Date.now(),
-          type: "Software Development"
-        }
-      ]
+      apps: null,
+      log: null
     };
+  }
+
+  componentDidMount() {
+    fetch('/apps')
+      .then(response => response.json())
+      .then(data => this.setState({...this.state, apps: data }));
+
+    fetch('/logs')
+      .then(response => response.json())
+      .then(data => this.setState({...this.state, log: data }));
+
+    console.log("StatE::: " + JSON.stringify(this.state));
   }
   
   render(){
+    const { apps, log} = this.state; 
     return (
       
     <div>
 
 
-      <div class="header">
+      <div className="header">
       <img src="./logo_transparent.png" alt="logo" />
       <h1>DevTime</h1>
       </div>
@@ -49,22 +51,26 @@ class App extends Component {
       <div className="main">
         
       
-      <div className= "input">
+      {/* <div className= "input">
       <p>block app</p>
       <Input />
-      </div>
+      </div> */}
 
       
-      <div className= "timetable">
-      <p>time spent</p>
-      <TimeTable logs={this.state.log}/>
-      </div>
+      { apps && log ? (
+        <div>
+        <div className= "timetable">
+        <p>time spent</p>
+        <TimeTable logs={log}/>
+        </div>
 
-      
-      <div className= "blockedapptable">
-       <p>blocked apps</p>
-      <BlockedAppTable apps={this.state.apps}/>
+        
+        <div className= "blockedapptable">
+        <p>blocked apps</p>
+        <BlockedAppTable apps={apps}/>
+        </div>
       </div>
+      ) : <div>is loading</div>}
   
       </div></div>
   
